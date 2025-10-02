@@ -53,7 +53,7 @@ function Getweather() {
   // 👉 Fullscreen Map Mode
   if (isMapExpanded) {
     return (
-      <div className="mt-6 w-full h-screen relative">
+      <div className=" w-full h-full relative">
         <FullMap setMapRef={mapRef} />
         <button
           onClick={toggleMap}
