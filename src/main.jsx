@@ -43,7 +43,10 @@ const router = createBrowserRouter(
     },
   ],
   {
-    basename: import.meta.env.MODE === "production" ? "/realweatherapp" : "/",
+    basename:
+      import.meta.env.MODE === "production"
+        ? "/realweatherapp"
+        : "/realweatherapp",
   }
 );
 

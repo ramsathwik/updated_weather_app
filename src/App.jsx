@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <NavBar />
-      <main className="relative z-10 min-h-screen w-full overflow-x-hidden">
+      <main className="relative z-10 min-h-screen w-full overflow-x-hidden pt-20">
         <Outlet />
       </main>
 
