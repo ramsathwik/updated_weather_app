@@ -1,11 +1,22 @@
 import { createContext, useState } from "react";
 
-const locationContext = createContext();
+export const LocationContext = createContext();
 export function LocationProvider({ children }) {
   let [selectedLocation, setSelectedLocation] = useState(null);
+  const [timeSelection, setTimeSelection] = useState({
+    type: null, // "month" or "season"
+    value: null, // month number or season name
+  });
   return (
-    <locationContext.Provider value={{ selectedLocation, setSelectedLocation }}>
+    <LocationContext.Provider
+      value={{
+        selectedLocation,
+        timeSelection,
+        setTimeSelection,
+        setSelectedLocation,
+      }}
+    >
       {children}
-    </locationContext.Provider>
+    </LocationContext.Provider>
   );
 }

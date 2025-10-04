@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { FaCalendarAlt, FaCheck, FaGlobe, FaDownload } from "react-icons/fa";
+import { FaCalendarAlt, FaCheck, FaGlobe } from "react-icons/fa";
+import { useContext } from "react";
+import { LocationContext } from "../../contexts/LocationContext";
 
 const SeasonButton = ({ label, isSelected, onClick }) => (
   <button
@@ -27,9 +29,24 @@ const MonthButton = ({ label, isSelected, onClick }) => (
   </button>
 );
 
+const monthMap = {
+  Jan: 1,
+  Feb: 2,
+  Mar: 3,
+  Apr: 4,
+  May: 5,
+  Jun: 6,
+  Jul: 7,
+  Aug: 8,
+  Sep: 9,
+  Oct: 10,
+  Nov: 11,
+  Dec: 12,
+};
+
 const SelectTimePeriod = () => {
-  const [selectedSeason, setSelectedSeason] = useState("Summer");
-  const [selectedMonth, setSelectedMonth] = useState("Jun");
+  const { timeSelection, setTimeSelection, selectedLocation } =
+    useContext(LocationContext);
 
   const seasons = ["Spring", "Summer", "Fall", "Winter"];
   const months = [
@@ -38,6 +55,19 @@ const SelectTimePeriod = () => {
     ["Jul", "Aug", "Sep"],
     ["Oct", "Nov", "Dec"],
   ];
+
+  async function handleAnalyze() {
+    if (!timeSelection.type || !timeSelection.value) {
+      alert("Please select a season or month.");
+      return;
+    }
+
+    console.log("Selection Type:", timeSelection.type);
+    console.log("Selection Value:", timeSelection.value);
+
+    let { lat, lng } = selectedLocation;
+    console.log(lat, lng);
+  }
 
   return (
     <div className="flex flex-col space-y-4">
@@ -52,8 +82,12 @@ const SelectTimePeriod = () => {
           <SeasonButton
             key={season}
             label={season}
-            isSelected={selectedSeason === season}
-            onClick={setSelectedSeason}
+            isSelected={
+              timeSelection.type === "season" && timeSelection.value === season
+            }
+            onClick={(label) =>
+              setTimeSelection({ type: "season", value: label })
+            }
           />
         ))}
       </div>
@@ -66,17 +100,33 @@ const SelectTimePeriod = () => {
               <MonthButton
                 key={month}
                 label={month}
-                isSelected={selectedMonth === month}
-                onClick={setSelectedMonth}
+                isSelected={
+                  timeSelection.type === "month" &&
+                  timeSelection.value === monthMap[month]
+                }
+                onClick={(label) =>
+                  setTimeSelection({ type: "month", value: monthMap[label] })
+                }
               />
             ))}
           </div>
         ))}
       </div>
+
       <div className="mt-4 p-4 bg-gray-50 rounded-xl border border-gray-200 text-sm">
         <div className="flex justify-between items-center mb-2">
-          <p className="font-semibold text-gray-700">Summer Season</p>
-          <FaCheck className="text-green-500 w-4 h-4" />
+          <p className="font-semibold text-gray-700">
+            {timeSelection.type
+              ? timeSelection.type === "season"
+                ? `${timeSelection.value} Season`
+                : `${Object.keys(monthMap).find(
+                    (key) => monthMap[key] === timeSelection.value
+                  )} Month`
+              : "No Selection"}
+          </p>
+          {timeSelection.value && (
+            <FaCheck className="text-green-500 w-4 h-4" />
+          )}
         </div>
         <p className="text-blue-600 font-medium text-xs">
           Historical data analysis period
@@ -87,7 +137,11 @@ const SelectTimePeriod = () => {
           to calculate probabilities for your selected time period.
         </p>
       </div>
-      <button className="flex items-center justify-center p-4 bg-blue-600 text-white font-bold text-lg rounded-xl shadow-lg hover:bg-blue-700 transition duration-200 mt-4">
+
+      <button
+        className="flex items-center justify-center p-4 bg-blue-600 text-white font-bold text-lg rounded-xl shadow-lg hover:bg-blue-700 transition duration-200 mt-4"
+        onClick={handleAnalyze}
+      >
         <FaGlobe className="mr-3 w-5 h-5" />
         Analyze Weather Data
       </button>

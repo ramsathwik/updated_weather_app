@@ -9,6 +9,7 @@ import {
   FaBolt,
   FaChartBar,
   FaCloudSunRain,
+  FaExclamationTriangle,
 } from "react-icons/fa";
 import HeroSection from "../components/HeroSection";
 
@@ -24,7 +25,30 @@ function About() {
         animated={false} // ✅ keep About simple (no clouds/particles)
       />
 
-      {/* Problem Section */}
+      {/* REVISED: Problem Statement Section - The Challenge */}
+      <section className="py-16 bg-white px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <FaExclamationTriangle className="text-red-500 text-5xl mx-auto mb-4" />
+          <h2 className="text-4xl font-extrabold text-gray-800 mb-6">
+            The Challenge: Will it Rain on My Parade?
+          </h2>
+          <p className="text-gray-600 text-xl leading-relaxed">
+            **General weather apps give averages, not outcomes.** When planning
+            a specific outdoor event—like a hike, concert, or family gathering—a
+            simple temperature range isn't enough. You need to know the
+            **probability** of conditions that could genuinely ruin the day,
+            like a dangerous heatwave, a sudden torrential downpour, or
+            uncomfortable wind chill.
+          </p>
+          <p className="text-gray-600 text-lg leading-relaxed mt-4">
+            Relying on vague forecasts leads to cancelled plans, wasted tickets,
+            and unpleasant memories. **There's a critical gap between forecast
+            data and actionable outdoor risk assessment.**
+          </p>
+        </div>
+      </section>
+
+      {/* Problem Section (Now focused on "Why This Matters") */}
       <section className="py-16 px-6 max-w-6xl mx-auto">
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <div>

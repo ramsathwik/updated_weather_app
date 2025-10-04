@@ -3,6 +3,9 @@ import { MdClose, MdOutlineExpand } from "react-icons/md";
 import { FaCalendarAlt, FaCheck, FaGlobe, FaDownload } from "react-icons/fa";
 import { FaCheckCircle } from "react-icons/fa";
 
+import { useContext } from "react";
+import { LocationContext } from "../../contexts/LocationContext";
+
 // Components
 import FullMap from "../components/FullMap";
 import MiniMap from "../components/MiniMap";
@@ -38,8 +41,8 @@ const PopularLocations = () => (
 function Getweather() {
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const mapRef = useRef(null);
-  let [selectedLocation, setSelectedLocation] = useState(null);
-  console.log("selected location is ", selectedLocation);
+  // let [selectedLocation, setSelectedLocation] = useState(null);
+  let { selectedLocation, setSelectedLocation } = useContext(LocationContext);
 
   const toggleMap = () => setIsMapExpanded(!isMapExpanded);
 
@@ -56,11 +59,7 @@ function Getweather() {
   if (isMapExpanded) {
     return (
       <div className=" w-full h-full relative">
-        <FullMap
-          setMapRef={mapRef}
-          selectedLocation={selectedLocation}
-          setSelectedLocation={setSelectedLocation}
-        />
+        <FullMap setMapRef={mapRef} />
         <button
           onClick={toggleMap}
           className="absolute top-8 right-4 z-[9999] bg-white text-gray-800 p-3 rounded-full shadow-xl hover:bg-red-100 transition focus:outline-none"
@@ -78,10 +77,7 @@ function Getweather() {
       {/* -------------------- LEFT SIDEBAR -------------------- */}
       <div className="w-full lg:w-1/3 xl:w-1/4 lg:mr-8 mb-6 lg:mb-0">
         <div className="bg-white p-6 rounded-2xl shadow-2xl h-full flex flex-col">
-          <LocationSearch
-            setSelectedLocation={setSelectedLocation}
-            selectedLocation={selectedLocation}
-          />
+          <LocationSearch />
           <PopularLocations />
 
           <hr className="my-4 border-gray-100" />
@@ -104,7 +100,6 @@ function Getweather() {
         </div>
       </div>
 
-      {/* -------------------- ANALYSIS RESULTS -------------------- */}
       <div className="w-full lg:flex-grow lg:w-2/3 xl:w-3/4">
         <div className="space-y-6">
           <h1 className="text-3xl font-light text-gray-800">

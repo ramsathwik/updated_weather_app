@@ -1,8 +1,10 @@
 import { MdSearch } from "react-icons/md";
 import { useState, useEffect } from "react";
 import { useContext } from "react";
+import { LocationContext } from "../../contexts/LocationContext";
 
-function LocationSearch({ setSelectedLocation, selectedLocation }) {
+function LocationSearch() {
+  let { selectedLocation, setSelectedLocation } = useContext(LocationContext);
   let [searchvalue, setSearchvalue] = useState("");
   let [suggestions, setSuggestions] = useState([]);
   let [showSuggestions, setShowSuggestions] = useState(false);
@@ -56,6 +58,9 @@ function LocationSearch({ setSelectedLocation, selectedLocation }) {
       setSearchvalue(selectedLocation.name);
     }
   }, [selectedLocation]);
+  function ceilToHalf(num) {
+    return Math.ceil(num * 2) / 2;
+  }
 
   return (
     <div className="mb-4 relative">
@@ -92,9 +97,14 @@ function LocationSearch({ setSelectedLocation, selectedLocation }) {
                   className="p-2 hover:bg-gray-100 cursor-pointer"
                   onClick={() => {
                     setSearchvalue(item.properties.formatted);
+                    let lat = item.geometry.coordinates[1];
+                    let lng = item.geometry.coordinates[0];
+                    lat = ceilToHalf(lat);
+                    lng = ceilToHalf(lng);
+
                     setSelectedLocation({
-                      lat: item.geometry.coordinates[1],
-                      lng: item.geometry.coordinates[0],
+                      lat,
+                      lng,
                       name: item.properties.formatted,
                     });
                     setSuggestions([]);

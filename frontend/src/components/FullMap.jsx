@@ -13,6 +13,9 @@ import iconUrl from "leaflet/dist/images/marker-icon.png";
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
 
+import { useContext } from "react";
+import { LocationContext } from "../../contexts/LocationContext";
+
 const DefaultIcon = L.icon({
   iconUrl,
   iconRetinaUrl,
@@ -36,8 +39,9 @@ function ResizeHandler() {
   return null;
 }
 
-const FullMap = ({ selectedLocation, setSelectedLocation }) => {
+const FullMap = () => {
   let location = useLocation();
+  let { selectedLocation, setSelectedLocation } = useContext(LocationContext);
 
   return (
     <div className="w-full h-full  rounded-2xl overflow-hidden shadow-inner">
