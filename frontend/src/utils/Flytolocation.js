@@ -10,10 +10,10 @@ function FlyToLocation({ location }) {
       location.length === 2 &&
       !location.includes(undefined)
     ) {
-      map.flyTo(location, 13, { animate: true });
+      map.flyTo(location, 9, { animate: true });
     }
   }, [location, map]);
 
-  return null; // Must return null
+  return null;
 }
 export default FlyToLocation;

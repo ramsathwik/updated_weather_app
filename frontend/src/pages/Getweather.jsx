@@ -38,6 +38,8 @@ const PopularLocations = () => (
 function Getweather() {
   const [isMapExpanded, setIsMapExpanded] = useState(false);
   const mapRef = useRef(null);
+  let [selectedLocation, setSelectedLocation] = useState(null);
+  console.log("selected location is ", selectedLocation);
 
   const toggleMap = () => setIsMapExpanded(!isMapExpanded);
 
@@ -54,7 +56,11 @@ function Getweather() {
   if (isMapExpanded) {
     return (
       <div className=" w-full h-full relative">
-        <FullMap setMapRef={mapRef} />
+        <FullMap
+          setMapRef={mapRef}
+          selectedLocation={selectedLocation}
+          setSelectedLocation={setSelectedLocation}
+        />
         <button
           onClick={toggleMap}
           className="absolute top-8 right-4 z-[9999] bg-white text-gray-800 p-3 rounded-full shadow-xl hover:bg-red-100 transition focus:outline-none"
@@ -72,7 +78,10 @@ function Getweather() {
       {/* -------------------- LEFT SIDEBAR -------------------- */}
       <div className="w-full lg:w-1/3 xl:w-1/4 lg:mr-8 mb-6 lg:mb-0">
         <div className="bg-white p-6 rounded-2xl shadow-2xl h-full flex flex-col">
-          <LocationSearch />
+          <LocationSearch
+            setSelectedLocation={setSelectedLocation}
+            selectedLocation={selectedLocation}
+          />
           <PopularLocations />
 
           <hr className="my-4 border-gray-100" />

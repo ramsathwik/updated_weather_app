@@ -3,6 +3,9 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 import { useEffect } from "react";
+import Locationhandler from "./LocationHandler";
+import useLocation from "../hooks/GetLocation";
+import FlyToLocation from "../utils/Flytolocation";
 
 // --- IMPORTANT: Fix for default Leaflet icon not showing in Vite/React ---
 import L from "leaflet";
@@ -33,13 +36,10 @@ function ResizeHandler() {
   return null;
 }
 
-const FullMap = () => {
-  const position = [20.5937, 78.9629]; // New York, NY
+const FullMap = ({ selectedLocation, setSelectedLocation }) => {
+  let location = useLocation();
 
   return (
-    // The h-full and w-full are critical for Leaflet to render correctly
-    // The className="h-full w-full" ensures it inherits the size from the parent
-
     <div className="w-full h-full  rounded-2xl overflow-hidden shadow-inner">
       <MapContainer
         center={[20.5937, 78.9629]} // Default India
@@ -52,12 +52,14 @@ const FullMap = () => {
           attribution="© Google Maps"
           maxZoom={20}
         />
-        <Marker position={position}>
-          <Popup>
-            India, <br /> 20.5937, 78.9629
-          </Popup>
-        </Marker>
         <ResizeHandler />
+        {selectedLocation && (
+          <Marker position={[selectedLocation.lat, selectedLocation.lng]}>
+            <Popup>{selectedLocation.name}</Popup>
+          </Marker>
+        )}
+        {location && <FlyToLocation location={location} />}
+        <Locationhandler setSelectedLocation={setSelectedLocation} />
       </MapContainer>
     </div>
   );

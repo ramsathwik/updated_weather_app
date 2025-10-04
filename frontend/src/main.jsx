@@ -9,6 +9,7 @@ import Contact from "./pages/Contact.jsx";
 import Getweather from "./pages/Getweather.jsx";
 import PageNotFound from "./pages/404.jsx";
 import WeatherDetails from "./pages/WeatherDetails.jsx";
+import { LocationProvider } from "../contexts/LocationContext.jsx";
 const router = createBrowserRouter(
   [
     {
@@ -29,7 +30,11 @@ const router = createBrowserRouter(
         },
         {
           path: "/Weather",
-          element: <Getweather />,
+          element: (
+            <LocationProvider>
+              <Getweather />
+            </LocationProvider>
+          ),
         },
         {
           path: "/dashboard",
