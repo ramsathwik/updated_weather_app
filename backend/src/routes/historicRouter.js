@@ -178,7 +178,6 @@ router.get("/historical", async (req, res) => {
       return res.status(400).json({ error: "Invalid type parameter" });
     }
 
-    console.log(data);
     return res.json({ data });
   } catch (err) {
     console.error(err);
@@ -226,7 +225,6 @@ async function fetchAndStoreMonthData(
           const response = await fetch(url);
           const data = await response.json();
           const values = data?.properties?.parameter || {};
-          console.log("PRECTOTCORR", values["PRECTOTCORR"], dateStr);
 
           const record = {
             date: `${year}-${mm}-${dd}`,
