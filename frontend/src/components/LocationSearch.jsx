@@ -4,7 +4,8 @@ import { useContext } from "react";
 import { LocationContext } from "../../contexts/LocationContext";
 
 function LocationSearch() {
-  let { selectedLocation, setSelectedLocation } = useContext(LocationContext);
+  let { selectedLocation, setSelectedLocation, setAnalyzed } =
+    useContext(LocationContext);
   let [searchvalue, setSearchvalue] = useState("");
   let [suggestions, setSuggestions] = useState([]);
   let [showSuggestions, setShowSuggestions] = useState(false);
@@ -14,6 +15,8 @@ function LocationSearch() {
     if (searchvalue === "") {
       setSuggestions([]);
       setNoResults(false);
+      setSelectedLocation(null);
+      setAnalyzed(false);
       return;
     }
 
@@ -23,7 +26,9 @@ function LocationSearch() {
     async function fetchSuggestions() {
       try {
         let response = await fetch(
-          `http://localhost:3000?text=${encodeURIComponent(searchvalue)}`,
+          `http://localhost:3000/search?text=${encodeURIComponent(
+            searchvalue
+          )}`,
           { signal }
         );
         let data = await response.json();

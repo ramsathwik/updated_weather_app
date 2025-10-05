@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   LineChart,
   Line,
@@ -7,28 +7,15 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  BarChart,
-  Bar,
 } from "recharts";
-
-// --- Sample Data for the Charts (1995-2021, similar to the screenshot) ---
-const chartData = [
-  { year: 1995, temp: 68.5, rain: 155 },
-  { year: 1998, temp: 70.0, rain: 130 },
-  { year: 2001, temp: 69.2, rain: 145 },
-  { year: 2004, temp: 68.8, rain: 160 },
-  { year: 2007, temp: 69.5, rain: 140 },
-  { year: 2010, temp: 70.2, rain: 150 },
-  { year: 2013, temp: 69.0, rain: 165 },
-  { year: 2016, temp: 69.8, rain: 125 },
-  { year: 2019, temp: 70.5, rain: 170 },
-  { year: 2021, temp: 69.3, rain: 158 },
-];
+import { LocationContext } from "../../contexts/LocationContext";
 
 const HistoricalTrends = () => {
+  const { chartData } = useContext(LocationContext);
+
   return (
-    <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
-      {/* -------------------- Temperature Chart (Line) -------------------- */}
+    <div className="flex flex-col space-y-6">
+      {/* Temperature Line Chart */}
       <div className="flex-1">
         <h3 className="text-lg font-medium mb-2">Temperature Trend</h3>
         <div className="border border-gray-200 rounded-lg p-2 bg-white shadow-inner h-64">
@@ -48,10 +35,9 @@ const HistoricalTrends = () => {
                 axisLine={false}
                 fontSize={12}
                 minTickGap={20}
-                padding={{ left: 10, right: 10 }}
               />
               <YAxis
-                domain={[68, 71]} // Set a fixed domain to mimic the screenshot
+                domain={["auto", "auto"]}
                 tickLine={false}
                 axisLine={false}
                 fontSize={12}
@@ -64,7 +50,7 @@ const HistoricalTrends = () => {
               <Line
                 type="monotone"
                 dataKey="temp"
-                stroke="#ef4444" // Tailwind red-500
+                stroke="#ef4444"
                 strokeWidth={2}
                 dot={{ r: 3 }}
                 activeDot={{ r: 6 }}
@@ -74,12 +60,12 @@ const HistoricalTrends = () => {
         </div>
       </div>
 
-      {/* -------------------- Rainfall Chart (Bar) -------------------- */}
+      {/* Rainfall Line Chart */}
       <div className="flex-1">
         <h3 className="text-lg font-medium mb-2">Rainfall Trend</h3>
         <div className="border border-gray-200 rounded-lg p-2 bg-white shadow-inner h-64">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart
+            <LineChart
               data={chartData}
               margin={{ top: 10, right: 10, left: -20, bottom: 5 }}
             >
@@ -94,10 +80,9 @@ const HistoricalTrends = () => {
                 axisLine={false}
                 fontSize={12}
                 minTickGap={20}
-                padding={{ left: 10, right: 10 }}
               />
               <YAxis
-                domain={[120, 180]} // Set a fixed domain
+                domain={["auto", "auto"]}
                 tickLine={false}
                 axisLine={false}
                 fontSize={12}
@@ -107,12 +92,15 @@ const HistoricalTrends = () => {
                 formatter={(value) => [`${value}MM`, "Avg Rainfall"]}
                 labelFormatter={(label) => `Year: ${label}`}
               />
-              <Bar
+              <Line
+                type="monotone"
                 dataKey="rain"
-                fill="#3b82f6" // Tailwind blue-500
-                barSize={15}
+                stroke="#3b82f6"
+                strokeWidth={2}
+                dot={{ r: 3 }}
+                activeDot={{ r: 6 }}
               />
-            </BarChart>
+            </LineChart>
           </ResponsiveContainer>
         </div>
       </div>

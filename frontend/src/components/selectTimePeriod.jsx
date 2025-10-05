@@ -45,8 +45,15 @@ const monthMap = {
 };
 
 const SelectTimePeriod = () => {
-  const { timeSelection, setTimeSelection, selectedLocation } =
-    useContext(LocationContext);
+  const {
+    timeSelection,
+    setTimeSelection,
+    selectedLocation,
+    setChartdata,
+    loading,
+    setLoading,
+    setAnalyzed,
+  } = useContext(LocationContext);
 
   const seasons = ["Spring", "Summer", "Fall", "Winter"];
   const months = [
@@ -55,18 +62,46 @@ const SelectTimePeriod = () => {
     ["Jul", "Aug", "Sep"],
     ["Oct", "Nov", "Dec"],
   ];
-
+  function ceilToHalf(num) {
+    return Math.ceil(num * 2) / 2;
+  }
   async function handleAnalyze() {
     if (!timeSelection.type || !timeSelection.value) {
       alert("Please select a season or month.");
       return;
     }
+    setLoading(true); // start loading
+    setAnalyzed(false);
 
     console.log("Selection Type:", timeSelection.type);
     console.log("Selection Value:", timeSelection.value);
 
     let { lat, lng } = selectedLocation;
+    lat = ceilToHalf(lat);
+    lng = ceilToHalf(lng);
     console.log(lat, lng);
+
+    const query = new URLSearchParams({
+      lat,
+      lng,
+      type: timeSelection.type,
+      value: timeSelection.value,
+    });
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/analyze/historical?${query}`
+      );
+      const data = await response.json();
+      console.log(data);
+      setChartdata(data.data);
+      setAnalyzed(true); // mark as analyzed
+    } catch (error) {
+      console.error(error);
+      alert("Error fetching analysis data");
+    }
+
+    setLoading(false);
   }
 
   return (
@@ -139,11 +174,16 @@ const SelectTimePeriod = () => {
       </div>
 
       <button
-        className="flex items-center justify-center p-4 bg-blue-600 text-white font-bold text-lg rounded-xl shadow-lg hover:bg-blue-700 transition duration-200 mt-4"
-        onClick={handleAnalyze}
+        className={`flex items-center justify-center p-4 font-bold text-lg rounded-xl shadow-lg transition duration-200 mt-4 ${
+          selectedLocation
+            ? "bg-blue-600 text-white hover:bg-blue-700"
+            : "bg-gray-300 text-gray-500 cursor-not-allowed"
+        }`}
+        onClick={selectedLocation ? handleAnalyze : null}
+        disabled={!selectedLocation}
       >
         <FaGlobe className="mr-3 w-5 h-5" />
-        Analyze Weather Data
+        {loading ? "Analyzing..." : "Analyze Weather Data"}
       </button>
     </div>
   );

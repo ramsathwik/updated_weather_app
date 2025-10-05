@@ -1,7 +1,53 @@
 import React from "react";
 import { FaDownload, FaFileCsv, FaCode, FaCopy } from "react-icons/fa";
+import { useContext } from "react";
+import { LocationContext } from "../../contexts/LocationContext";
 
+function downloadJSON(data) {
+  const jsonString = JSON.stringify(data, null, 2);
+  const blob = new Blob([jsonString], { type: "application/json" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "weather_data.json";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+function convertToCSV(data) {
+  const keys = Object.keys(data[0]); // headers
+  const csvRows = [keys.join(",")]; // add headers
+
+  data.forEach((obj) => {
+    const row = keys.map((key) => obj[key]).join(",");
+    csvRows.push(row);
+  });
+
+  return csvRows.join("\n");
+}
+
+function downloadCSV(data) {
+  const csvString = convertToCSV(data);
+  const blob = new Blob([csvString], { type: "text/csv" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "weather_data.csv";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+const copyToClipboard = async (data) => {
+  try {
+    const jsonString = JSON.stringify(data, null, 2);
+    await navigator.clipboard.writeText(jsonString);
+    alert("✅ Data copied to clipboard!");
+  } catch (err) {
+    console.error("Clipboard copy failed:", err);
+    alert("❌ Failed to copy data");
+  }
+};
 const ExportData = () => {
+  let { chartData } = useContext(LocationContext);
   const exportItems = [
     "Location coordinates and name",
     "Selected time period information",
@@ -13,6 +59,15 @@ const ExportData = () => {
   const ExportCard = ({ icon, title, description, colorClass }) => (
     <div
       className={`p-4 rounded-xl border ${colorClass} bg-white shadow-sm hover:shadow-md transition cursor-pointer flex flex-col items-center text-center`}
+      onClick={() => {
+        if (title == "CSV Format") {
+          downloadCSV(chartData);
+        } else if (title == "JSON Format") {
+          downloadJSON(chartData);
+        } else {
+          copyToClipboard(chartData);
+        }
+      }}
     >
       <div
         className={`p-3 rounded-full ${colorClass

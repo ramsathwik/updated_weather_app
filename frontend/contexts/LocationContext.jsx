@@ -7,6 +7,9 @@ export function LocationProvider({ children }) {
     type: null, // "month" or "season"
     value: null, // month number or season name
   });
+  let [chartData, setChartdata] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [analyzed, setAnalyzed] = useState(false);
   return (
     <LocationContext.Provider
       value={{
@@ -14,6 +17,12 @@ export function LocationProvider({ children }) {
         timeSelection,
         setTimeSelection,
         setSelectedLocation,
+        chartData,
+        setChartdata,
+        loading,
+        setLoading,
+        analyzed,
+        setAnalyzed,
       }}
     >
       {children}
