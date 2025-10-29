@@ -10,46 +10,38 @@ import Getweather from "./pages/Getweather.jsx";
 import PageNotFound from "./pages/404.jsx";
 import WeatherDetails from "./pages/WeatherDetails.jsx";
 import { LocationProvider } from "../contexts/LocationContext.jsx";
-const router = createBrowserRouter(
-  [
-    {
-      path: "/",
-      element: <App />,
-      children: [
-        {
-          path: "/",
-          element: <Home />,
-        },
-        {
-          path: "/About",
-          element: <About />,
-        },
-        {
-          path: "/Contact",
-          element: <Contact />,
-        },
-        {
-          path: "/Weather",
-          element: <Getweather />,
-        },
-        {
-          path: "/dashboard",
-          element: <WeatherDetails></WeatherDetails>,
-        },
-        {
-          path: "*",
-          element: <PageNotFound />,
-        },
-      ],
-    },
-  ],
+const router = createBrowserRouter([
   {
-    basename:
-      import.meta.env.MODE === "production"
-        ? "/realweatherapp"
-        : "/realweatherapp",
-  }
-);
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/About",
+        element: <About />,
+      },
+      {
+        path: "/Contact",
+        element: <Contact />,
+      },
+      {
+        path: "/Weather",
+        element: <Getweather />,
+      },
+      {
+        path: "/dashboard",
+        element: <WeatherDetails></WeatherDetails>,
+      },
+      {
+        path: "*",
+        element: <PageNotFound />,
+      },
+    ],
+  },
+]);
 
 createRoot(document.getElementById("root")).render(
   <LocationProvider>
