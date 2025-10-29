@@ -6,7 +6,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server"
+    "dev": "nodemon server",
+    "start": "node server.js",
+     
+    "build": "cd ../frontend && npm ci && npm run build && cp -r dist ../backend/dist"
+
   },
   "keywords": [],
   "author": "",
