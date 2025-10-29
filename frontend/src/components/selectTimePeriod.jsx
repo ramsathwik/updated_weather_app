@@ -15,7 +15,7 @@ const SeasonButton = ({ label, isSelected, onClick }) => (
     {label}
   </button>
 );
-
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 const MonthButton = ({ label, isSelected, onClick }) => (
   <button
     className={`p-3 rounded-xl flex-1 text-center text-sm transition-all ${
@@ -90,7 +90,7 @@ const SelectTimePeriod = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/analyze/historical?${query}`
+        `${BACKEND_URL}/analyze/historical?${query}`
       );
       const data = await response.json();
       console.log(data);

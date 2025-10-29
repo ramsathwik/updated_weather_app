@@ -2,7 +2,7 @@ import { MdSearch } from "react-icons/md";
 import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { LocationContext } from "../../contexts/LocationContext";
-
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 function LocationSearch() {
   let { selectedLocation, setSelectedLocation, setAnalyzed } =
     useContext(LocationContext);
@@ -26,9 +26,7 @@ function LocationSearch() {
     async function fetchSuggestions() {
       try {
         let response = await fetch(
-          `http://localhost:3000/search?text=${encodeURIComponent(
-            searchvalue
-          )}`,
+          `${BACKEND_URL}/search?text=${encodeURIComponent(searchvalue)}`,
           { signal }
         );
         let data = await response.json();
